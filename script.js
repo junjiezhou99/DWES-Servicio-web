@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Perform your AJAX/Fetch login
         fetchLogin();
-
     });
 
     createAccountForm.addEventListener("submit", e => {
@@ -61,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function fetchLogin(){
+    const loginForm = document.querySelector("#login");
     const user = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const userData = {
@@ -75,8 +75,14 @@ async function fetchLogin(){
         body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
-    console.log(data);
+    let data = await response.json();
+    if(data.ERROR){
+        setFormMessage(loginForm, "error", data.ERROR);
+    } else {
+        setFormMessage(loginForm, "success", data.message);
+        window.location.href = "movies.html"
+    }
+    return success;
 }
 
 async function fetchRegister(){
